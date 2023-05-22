@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reporting Page</title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      span {
+           content: "\2714";
+           }
+    </style>
+  </head>
+  <body>
+    <h1>Reporting Page</h1>
+    <form action="/report" method="POST">
+      <label for="start_date">Start Date:</label>
+      <input type="date" id="start_date" name="start_date" required>
+      <label for="end_date">End Date:</label>
+      <input type="date" id="end_date" name="end_date" required>
+      <label for="start_time">Start Time:</label>
+      <input type="time" id="start_time" name="start_time" required>
+      <label for="end_time">End Time:</label>
+      <input type="time" id="end_time" name="end_time" required>
+      <button type="submit">Generate Report</button>
+      <button type="submit" formaction="/reportexel">Generate exel</button>
+    </form>
+    <% if (rows) { %>
+      <table>
+        <thead>
+          <tr>
+           <th>POSITION</th>
+           <th>SYMBOL</th>
+           <th>Entry Price</th>
+           <th>RR</th>
+           <th>✅ TP</th>
+           <th>TP Price</th>
+           <th>Tp Percent</th>
+           <th>❌ SL</th>
+           <th>Sl Price</th>
+           <th>SL Percent</th>
+           <th>START DATE</th>
+           <th>START HOURS</th>
+           <th>END DATE</th>
+           <th>END HOURS</th>
+           <th>STRATEGY</th>
+           <th>STATUS</th>
+           <th>APPROVE</th>
+
+           
+           
+           
+            <!-- Add more table headers for each column you want to display -->
+         </tr>
+       </thead>
+       <tbody>
+          <% rows.forEach((row) => { %>
+           <tr>
+             <td><%= row.position === 'long' ? '🟢 Long' : row.position === 'short'? '🔴 Short' : ''  %></td>
+             <td><%= row.symbol %></td>
+             <td><%= row.entry_price %></td>
+             <td><%= row.rr %></td>
+             <td><%= row.tp_active  ? '✅' : '' %></td>
+             <td><%= row.tp_active ? row.tp_price : row.sl_active ? '' : row.tp_price %></td>
+             <td><%= row.tp_active ? row.tp_percent + '%' : row.sl_active ? '' : row.tp_percent +'%' %></td>
+             <td><%= row.sl_active  ? '❌' : ''  %></td>
+             <td><%= row.sl_price %></td>
+             <td><%= row.sl_percent === null ?  '-'  : '-' + row.sl_percent + '%' %></td>
+             <td><%= row.date_start %></td>
+             <td><%= row.hours_start %></td>
+             <td><%= row.date_end %></td>
+             <td><%= row.hours_end %></td>
+             <td><%= row.strategy %></td>
+             <td><%= row.status === 'open_position' ? 'OPEN' : row.status === 'close_position' ? 'CLOSE' : ''  %></td>
+             <td><%= row.approve ? 'YES' : 'NO'  %></td>
+
+             
+             
+             
+             <!-- Add more table cells for each column you want to display -->
+           </tr>
+         <% }) %>
+       </tbody>
+      </table>
+    <% } %>
+  </body>
+</html>

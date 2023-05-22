@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="refresh" content="5">
+    <meta charset="utf-8">
+    <title>Dashboard</title>
+    <style>
+      .hidden-button {
+        display: none;
+        
+      }
+    </style>
+        <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        text-align: left;
+        padding: 8px;
+      }
+      th {
+        background-color: #6d706d;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+    </style>
+
+  </head>
+  <body>
+    <h1>Welcome, <%= username %>!</h1>
+    <p>Your user ID is: <%= id %></p>
+    <p><a href="/logout">Logout</a></p>
+    <div>
+    <h1>SIGNAL LIST</h1>
+    <% if (data) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>POSITION</th>
+            <th>SYMBOL</th>
+            <th>Entry Price</th>
+            <th>RR</th>
+            <th>✅ TP</th>
+            <th>TP Price</th>
+            <th>Tp Percent</th>
+            <th>❌ SL</th>
+            <th>Sl Price</th>
+            <th>SL Percent</th>
+            <th>START DATE</th>
+            <th>START HOURS</th>
+            <th>END DATE</th>
+            <th>END HOURS</th>
+            <th>STRATEGY</th>
+            <th>STATUS</th>
+            <th>APPROVE</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data.slice(startIndex, endIndex).forEach((row) => { %>
+            <tr>
+              <td><%= row.position === 'long' ? '🟢 Long' : row.position === 'short' ? '🔴 Short' : '' %></td>
+              <td><%= row.symbol %></td>
+              <td><%= row.entry_price %></td>
+              <td><%= row.rr %></td>
+              <td><%= row.tp_active ? '✅' : '' %></td>
+              <td><%= row.tp_active ? row.tp_price : row.sl_active ? '' : row.tp_price %></td>
+              <td><%= row.tp_active ? row.tp_percent + '%' : row.sl_active ? '' : row.tp_percent + '%' %></td>
+              <td><%= row.sl_active ? '❌' : '' %></td>
+              <td><%= row.sl_price %></td>
+              <td><%= row.sl_percent === null ? '-' : '-' + row.sl_percent + '%' %></td>
+              <td><%= row.date_start %></td>
+              <td><%= row.hours_start %></td>
+              <td><%= row.date_end %></td>
+              <td><%= row.hours_end %></td>
+              <td><%= row.strategy %></td>
+              <td><%= row.status === 'open_position' ? 'OPEN' : row.status === 'close_position' ? 'CLOSE' : '' %></td>
+              <td><%= row.approve ? 'YES' : 'NO' %></td>
+              <td>
+                <% if (row.approve) { %>
+                  <button disabled>APPROVED</button>
+                <% } else { %>
+                  <form action="/approve" method="post">
+                    <input type="hidden" name="id" value="<%= row.id %>">
+                    <button type="submit">APPROVE</button>
+                  </form>
+                <% } %>
+              </td>
+              <!-- <td>
+                <% if (!row.approve) { %>
+                  <button class="hidden-button">CLOSE POSITION</button>
+                <% } %>
+              </td>
+              <td>
+                <% if (row.approve) { %>
+                  <form action="/updateColumn2" method="post">
+                    <input type="hidden" name="id" value="<%= row.id %>">
+                    <button type="submit">CLOSE POSITION</button>
+                  </form>
+                <% } %>
+              </td> -->
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <!-- <% const totalPages = Math.ceil(data.length / rowsPerPage);
+         if (totalPages > 1) { %>
+        <div>
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <% if (currentPage === i) { %>
+              <strong><%= i %></strong>
+            <% } else { %>
+              <a href="/dashboard?page=<%= i %>"><%= i %></a>
+            <% } %>
+          <% } %>
+        </div>
+      <% } %> -->
+    <% } %>
+  </div>
+  <div>
+    <h1>APPROVE LIST</h1>
+    <% if (data1) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>POSITION</th>
+            <th>SYMBOL</th>
+            <th>Entry Price</th>
+            <th>RR</th>
+            <th>✅ TP</th>
+            <th>TP Price</th>
+            <th>Tp Percent</th>
+            <th>❌ SL</th>
+            <th>Sl Price</th>
+            <th>SL Percent</th>
+            <th>START DATE</th>
+            <th>START HOURS</th>
+            <th>END DATE</th>
+            <th>END HOURS</th>
+            <th>STRATEGY</th>
+            <th>STATUS</th>
+            <th>APPROVE</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% data1.slice(startIndex, endIndex).forEach((row) => { %>
+            <tr>
+              <td><%= row.position === 'long' ? '🟢 Long' : row.position === 'short' ? '🔴 Short' : '' %></td>
+              <td><%= row.symbol %></td>
+              <td><%= row.entry_price %></td>
+              <td><%= row.rr %></td>
+              <td><%= row.tp_active ? '✅' : '' %></td>
+              <td><%= row.tp_active ? row.tp_price : row.sl_active ? '' : row.tp_price %></td>
+              <td><%= row.tp_active ? row.tp_percent + '%' : row.sl_active ? '' : row.tp_percent + '%' %></td>
+              <td><%= row.sl_active ? '❌' : '' %></td>
+              <td><%= row.sl_price %></td>
+              <td><%= row.sl_percent === null ? '-' : '-' + row.sl_percent + '%' %></td>
+              <td><%= row.date_start %></td>
+              <td><%= row.hours_start %></td>
+              <td><%= row.date_end %></td>
+              <td><%= row.hours_end %></td>
+              <td><%= row.strategy %></td>
+              <td><%= row.status === 'open_position' ? 'OPEN' : row.status === 'close_position' ? 'CLOSE' : '' %></td>
+              <td><%= row.approve ? 'YES' : 'NO' %></td>
+              <td>
+                <% if (row.status === 'close_position') { %>
+                  <button disabled>Closeed Position</button>
+                <% } else { %>
+                  <form action="/closeposition" method="post">
+                    <input type="hidden" name="id" value="<%= row.id %>">
+                    <button type="submit">Close Position</button>
+                  </form>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+
+      <% const totalPages = Math.ceil(data.length / rowsPerPage);
+         if (totalPages > 1) { %>
+        <div>
+          <% for (let i = 1; i <= totalPages; i++) { %>
+            <% if (currentPage === i) { %>
+              <strong><%= i %></strong>
+            <% } else { %>
+              <a href="/dashboard?page=<%= i %>"><%= i %></a>
+            <% } %>
+          <% } %>
+        </div>
+      <% } %>
+    <% } %>
+  </div>
+  </body>
+</html>
