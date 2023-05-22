@@ -241,7 +241,7 @@ app.post('/approve', (req, res) => {
           .setLeverage({
             symbol: symbolname,
             side: "Short",
-            leverage: "1",
+            leverage: "5",
           })
         .then((data) => console.log(data));
 
@@ -251,7 +251,7 @@ app.post('/approve', (req, res) => {
             const totalPrice = result.totalPrice;
             const leverage = result.Leverage.data.shortLeverage; //result.Leverage.data.longLeverage
             console.log(leverage)
-            const volPrice = (totalPrice.data.account.balance / 100) * leverage
+            const volPrice = (totalPrice.data.account.balance / 20) * leverage
             const tradePrice1 = data.data.tradePrice;
             const tradePrice = tradePrice1 - (tradePrice1 / 10000)
             const entrustVolume = volPrice / tradePrice
@@ -302,7 +302,7 @@ app.post('/approve', (req, res) => {
           .setLeverage({
             symbol: symbolname,
             side: "Long",
-            leverage: "1",
+            leverage: "5",
           })
         .then((data) => console.log(data));
 
@@ -312,7 +312,7 @@ app.post('/approve', (req, res) => {
             const totalPrice = result.totalPrice;
             const leverage = result.Leverage.data.longLeverage; //result.Leverage.data.longLeverage
             console.log(leverage)
-            const volPrice = (totalPrice.data.account.balance / 50) * leverage
+            const volPrice = (totalPrice.data.account.balance / 20) * leverage
             const tradePrice1 = data.data.tradePrice;
             const tradePrice = tradePrice1 * 1.0001
             const entrustVolume = volPrice / tradePrice
